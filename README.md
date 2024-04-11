@@ -6,7 +6,7 @@ Glitch BAC is an automated script that installs bac onto a glitch.com website.
 2. run the command `wget github.com/SaiPanneerselvam/glitchbac/raw/main/mkbac/wk/rc.sh`.
 3. run the command `chmod +x rc.sh`
 4. run the command `./rc.sh`
-5. you're done! look at [How to use](#how to use) next.
+5. you're done! look at [How to use](#how-to-use) next.
 
 ### How to use
 the bac commandline does exist and can be found. Here is how!
