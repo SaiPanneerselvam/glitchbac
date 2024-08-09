@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Create the wkback folder
+# Create the wkback folder if it doesn't exist
 mkdir -p wkback
 
 # Create a separate file named wkbac.sh with commands
@@ -99,6 +99,64 @@ list_all() {
     ls -la wkback
 }
 
+file_size() {
+    stat -c%s "wkback/\$1"
+}
+
+folder_size() {
+    du -sh "wkback/\$1" | cut -f1
+}
+
+search_file() {
+    grep -r "\$2" "wkback/\$1"
+}
+
+backup_wkback() {
+    timestamp=\$(date +%Y%m%d_%H%M%S)
+    tar -czf "wkback_backup_\$timestamp.tar.gz" "wkback"
+}
+
+restore_wkback() {
+    if [ -f "\$2" ]; then
+        tar -xzf "\$2" -C "."
+    else
+        echo "Backup file does not exist"
+    fi
+}
+
+help() {
+    echo "Available commands:"
+    echo "  write <message>                - Write a message to the console"
+    echo "  add_file <filename>            - Create a new file"
+    echo "  delete_file <filename>         - Delete a file"
+    echo "  append_to_file <file> <text>   - Append text to a file"
+    echo "  overwrite_file <file> <text>   - Overwrite a file with text"
+    echo "  read_file <filename>           - Read and display file contents"
+    echo "  list_files                     - List all files"
+    echo "  count_files                    - Count the number of files"
+    echo "  move_file <src> <dest>         - Move a file"
+    echo "  copy_file <src> <dest>         - Copy a file"
+    echo "  rename_file <old> <new>        - Rename a file"
+    echo "  create_folder <foldername>     - Create a new folder"
+    echo "  delete_folder <foldername>     - Delete a folder"
+    echo "  list_folders                   - List all folders"
+    echo "  count_folders                  - Count the number of folders"
+    echo "  move_folder <src> <dest>       - Move a folder"
+    echo "  copy_folder <src> <dest>       - Copy a folder"
+    echo "  rename_folder <old> <new>      - Rename a folder"
+    echo "  compress_folder <folder>       - Compress a folder"
+    echo "  extract_folder <archive>       - Extract a folder archive"
+    echo "  list_archives                  - List all compressed archives"
+    echo "  delete_archive <archive>       - Delete a compressed archive"
+    echo "  list_all                       - List all files and folders with details"
+    echo "  file_size <filename>           - Get the size of a file"
+    echo "  folder_size <foldername>       - Get the size of a folder"
+    echo "  search_file <filename> <text>  - Search for text in a file"
+    echo "  backup_wkback                  - Backup the entire wkback directory"
+    echo "  restore_wkback <backup_file>   - Restore wkback from a backup file"
+    echo "  help                           - Show this help message"
+}
+
 case "\$1" in
     write)
         write "\$2"
@@ -169,8 +227,26 @@ case "\$1" in
     list_all)
         list_all
         ;;
+    file_size)
+        file_size "\$2"
+        ;;
+    folder_size)
+        folder_size "\$2"
+        ;;
+    search_file)
+        search_file "\$2" "\$3"
+        ;;
+    backup_wkback)
+        backup_wkback
+        ;;
+    restore_wkback)
+        restore_wkback "\$2"
+        ;;
+    help)
+        help
+        ;;
     *)
-        echo "Unknown command"
+        echo "Unknown command. Use 'help' for a list of commands."
         ;;
 esac
 EOF
